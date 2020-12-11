@@ -6,6 +6,7 @@ import com.android.openapi.persistence.AuthTokenDao
 import com.android.openapi.session.SessionManager
 
 class AuthRepository
+
 constructor(
     val authTokenDao: AuthTokenDao,
     val accountPropertiesDao :AccountPropertiesDao,
