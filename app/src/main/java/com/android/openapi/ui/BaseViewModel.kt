@@ -30,6 +30,7 @@ abstract class BaseViewModel<StateEvent,ViewState> : ViewModel(){
             it
         }?:initNewViewState()
         return value
+
     }
     abstract fun initNewViewState() : ViewState
 
