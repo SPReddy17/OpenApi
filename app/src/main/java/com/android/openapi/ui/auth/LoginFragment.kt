@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import com.android.openapi.R
+import com.android.openapi.models.AuthToken
 import com.android.openapi.ui.auth.state.LoginFields
 import com.android.openapi.util.GenericApiResponse
 import kotlinx.android.synthetic.main.fragment_login.*
