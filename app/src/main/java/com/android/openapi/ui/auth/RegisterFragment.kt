@@ -2,13 +2,14 @@ package com.android.openapi.ui.auth
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import com.android.openapi.R
-import com.android.openapi.util.GenericApiResponse
+import com.android.openapi.ui.auth.state.RegistrationFields
+import kotlinx.android.synthetic.main.fragment_register.*
+
 
 class RegisterFragment : BaseAuthFragment() {
 
@@ -25,20 +26,29 @@ class RegisterFragment : BaseAuthFragment() {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "RegisterFragment: ${viewModel.hashCode()} ")
 
-        viewModel.testRegistration().observe(viewLifecycleOwner, Observer {response ->
-            when(response){
+        subscribeObservers()
+    }
 
-                is GenericApiResponse.ApiSuccessResponse -> {
-                    Log.d(TAG, "Registration response :  ${response.body}")
-                }
-                is GenericApiResponse.ApiErrorResponse -> {
-                    Log.d(TAG, "Registration response :  ${response.errorMessage}")
-                }
-                is GenericApiResponse.ApiEmptyResponse -> {
-                    Log.d(TAG, "Registration response : empty response")
-
-                }
+    fun subscribeObservers(){
+        viewModel.viewState.observe(viewLifecycleOwner, Observer {
+            it.registrationFields?.let { registrationFields ->
+                registrationFields.registration_email?.let {input_email.setText(it)  }
+                registrationFields.registration_username?.let {  input_username.setText(it)}
+                registrationFields.registration_password?.let {  input_password.setText(it)}
+                registrationFields.registration_confirm_password?.let {  input_password_confirm.setText(it)}
             }
         })
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewModel.setRegistrationFields(
+            RegistrationFields(
+                input_email.text.toString(),
+                input_username.text.toString(),
+                input_password.text.toString(),
+                input_password_confirm.text.toString()
+            )
+        )
     }
 }
