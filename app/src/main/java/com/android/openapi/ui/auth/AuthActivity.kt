@@ -26,7 +26,6 @@ class AuthActivity : BaseActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_auth)
-
         viewModel = ViewModelProvider(this,providerFactory).get(AuthViewModel::class.java)
         subscribeObservers()
 
