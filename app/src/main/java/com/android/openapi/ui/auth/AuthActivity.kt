@@ -3,6 +3,7 @@ package com.android.openapi.ui.auth
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -11,10 +12,12 @@ import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
 import com.android.openapi.R
 import com.android.openapi.ui.BaseActivity
+import com.android.openapi.ui.DataState
 import com.android.openapi.ui.Response
 import com.android.openapi.ui.ResponseType
 import com.android.openapi.ui.main.MainActivity
 import com.android.openapi.viewmodels.ViewModelProviderFactory
+import kotlinx.android.synthetic.main.activity_auth.*
 import javax.inject.Inject
 
 class AuthActivity : BaseActivity(),
@@ -25,6 +28,7 @@ class AuthActivity : BaseActivity(),
     lateinit var providerFactory : ViewModelProviderFactory
 
     lateinit var viewModel : AuthViewModel
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,28 +43,13 @@ class AuthActivity : BaseActivity(),
     fun subscribeObservers(){
 
         viewModel.dataState.observe(this, Observer {dataState ->
+            onDataStateChange(dataState)
             dataState.data?.let {data ->
                 data.data?.let {event ->
                     event.getContentIfNotHandled()?.let {
                         it.authToken?.let {
                             Log.d(TAG, "AuthActivity ,DataState : ${it} " )
                             viewModel.setAuthToken(it)
-                        }
-                    }
-                }
-                data.response?.let {event ->
-                    event.getContentIfNotHandled()?.let {
-                        when(it.responseType){
-                            is ResponseType.Dialog ->{
-                                // inflate error dialog
-                            }
-                            is ResponseType.Toast -> {
-                                // show toast
-                            }
-                            is ResponseType.None -> {
-                                Log.e(TAG, "AuthActivity, Response, ${it.message}" )
-
-                            }
                         }
                     }
                 }
@@ -93,5 +82,12 @@ class AuthActivity : BaseActivity(),
     ) {
         viewModel.cancelActiveJobs()
     }
-
+    override fun displayProgressBar(bool: Boolean) {
+        if(bool){
+            progress_bar.visibility = View.VISIBLE
+        }
+        else{
+            progress_bar.visibility = View.INVISIBLE
+        }
+    }
 }
