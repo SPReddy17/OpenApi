@@ -44,7 +44,7 @@ constructor(
                )
            }
            is CheckPreviousAuthEvent -> {
-               return AbsentLiveData.create()
+               return authRepository.checkPreviousAuthUser()
            }
        }
     }
@@ -80,7 +80,7 @@ constructor(
     }
 
     fun cancelActiveJobs(){
-        authRepository.cancelActivejobs()
+        authRepository.cancelActiveJobs()
     }
 
     override fun onCleared() {

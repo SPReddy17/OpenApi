@@ -1,6 +1,8 @@
 package com.android.openapi.di
 
 import android.app.Application
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.room.Room
 import com.android.openapi.R
 import com.android.openapi.persistence.AccountPropertiesDao
@@ -9,6 +11,7 @@ import com.android.openapi.persistence.AppDatabase.Companion.DATABASE_NAME
 import com.android.openapi.persistence.AuthTokenDao
 import com.android.openapi.util.Constants
 import com.android.openapi.util.LiveDataCallAdapterFactory
+import com.android.openapi.util.PreferenceKeys
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.request.RequestOptions
@@ -24,6 +27,17 @@ import javax.inject.Singleton
 class AppModule{
 
 
+    @Singleton
+    @Provides
+    fun provideSharedPreferences(application: Application): SharedPreferences {
+        return application.getSharedPreferences(PreferenceKeys.APP_PREFERENCES, Context.MODE_PRIVATE)
+    }
+
+    @Singleton
+    @Provides
+    fun provideSharedPrefsEditor(sharedPreferences: SharedPreferences): SharedPreferences.Editor {
+        return sharedPreferences.edit()
+    }
     @Singleton
     @Provides
     fun provideGsonBuilder() : Gson{
@@ -73,5 +87,6 @@ class AppModule{
         return Glide.with(application)
             .setDefaultRequestOptions(requestOptions)
     }
+
 
 }

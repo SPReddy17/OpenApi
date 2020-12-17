@@ -15,6 +15,7 @@ import com.android.openapi.ui.BaseActivity
 import com.android.openapi.ui.DataState
 import com.android.openapi.ui.Response
 import com.android.openapi.ui.ResponseType
+import com.android.openapi.ui.auth.state.AuthStateEvent
 import com.android.openapi.ui.main.MainActivity
 import com.android.openapi.viewmodels.ViewModelProviderFactory
 import kotlinx.android.synthetic.main.activity_auth.*
@@ -38,6 +39,7 @@ class AuthActivity : BaseActivity(),
         findNavController(R.id.auth_nav_host_fragment).addOnDestinationChangedListener(this)
         subscribeObservers()
 
+        checkPreviousAuthUser()
     }
 
     fun subscribeObservers(){
@@ -67,6 +69,10 @@ class AuthActivity : BaseActivity(),
                 finish()
             }
         })
+    }
+
+    fun checkPreviousAuthUser(){
+        viewModel.setStateEvent(AuthStateEvent.CheckPreviousAuthEvent())
     }
 
     private fun navMainActivity() {
