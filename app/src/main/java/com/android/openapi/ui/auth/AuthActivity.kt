@@ -18,6 +18,7 @@ import com.android.openapi.ui.ResponseType
 import com.android.openapi.ui.auth.state.AuthStateEvent
 import com.android.openapi.ui.main.MainActivity
 import com.android.openapi.viewmodels.ViewModelProviderFactory
+import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.activity_auth.*
 import javax.inject.Inject
 
@@ -95,5 +96,8 @@ class AuthActivity : BaseActivity(),
         else{
             progress_bar.visibility = View.INVISIBLE
         }
+    }
+
+    override fun expandAppBar() {
     }
 }
